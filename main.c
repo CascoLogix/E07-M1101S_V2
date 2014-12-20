@@ -12,6 +12,7 @@
 #include <Timer0_A3.h>
 #include <Timer1_A3.h>
 #include <GPIO.h>
+#include <main.h>
 
 
 #define SW2FLAG 		0x01			//flag for SW2 being pressed
@@ -44,6 +45,9 @@ int main(void)
     gpio_port1_init();
     Timer0_init();
     Timer1_init();
+
+    USCI_A0_init_UART(9600, USCI_A0_CLK_SRC_SMCLK);
+    USCI_A0_UART_write_TX_buffer('T');
 
 	GPIO_PORT1.out = S2_BIT;					// Set S2 pin out register for pullup
 	GPIO_PORT1.direction = ~S2_BIT;				// Set LED pin to output mode
