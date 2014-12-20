@@ -489,6 +489,24 @@ __interrupt void GPIO_Port1_ISR (void)
 			GPIO_PORT1.interrupt_flag = 0;
 			break;
 	}
+
+	// TODO: Merge below code into code above
+#if 0
+	//if switch two was pressed, debounce and then clear flag
+	if(SW_PxIFG & SW2)
+	{
+		__delay_cycles(5000);
+		FLAGS |= SW2FLAG;
+		SW_PxIFG &= ~SW2;
+	}
+	else if (GDO0_PxIFG & GDO0_PIN)      //SW2
+	{
+		FLAGS |= GDO0FLAG;
+		GDO0_PxIFG &= ~GDO0_PIN;
+	}
+
+	LPM3_EXIT;
+#endif // 0
 }
 
 
