@@ -26,7 +26,7 @@
 //	Code Compilation Control Defines
 /*****************************************************************************/
 //Put code compilation defines here
-#define _FCPU	1000000
+#define _FCPU	1048576
 /*****************************************************************************/
 //	End Code Compilation Control Defines
 

@@ -168,7 +168,9 @@ portJ_t volatile * const p_PORTJ =
 /*****************************************************************************/
 //Put Variable Declarations here
 static functionPointer_t GPIO_PORT1_callback[8];
+static uint8_t GPIO_PORT1_LPM_bits[8];
 static functionPointer_t GPIO_PORT2_callback[8];
+static uint8_t GPIO_PORT2_LPM_bits[8];
 /*****************************************************************************/
 //	End Variable Declarations
 
@@ -293,6 +295,7 @@ void gpio_port2_init (void)
 	//GPIO_PORT2.drive_strength = 0;
 	GPIO_PORT2.select = 0;
 	GPIO_PORT2.interrupt_edge_select = 0;
+	GPIO_PORT2.interrupt_flag = 0;
 	GPIO_PORT2.interrupt_enable = 0;
 }
 #endif
@@ -429,9 +432,10 @@ void gpio_portJ_init (void)
 #endif
 
 
-void GPIO_PORT1_registerCallback (uint8_t portPinNum, functionPointer_t fPtr)
+void GPIO_PORT1_registerCallback (uint8_t portPinNum, functionPointer_t fPtr, uint8_t LPM_bits)
 {
 	GPIO_PORT1_callback[portPinNum] = fPtr;
+	GPIO_PORT1_LPM_bits[portPinNum] = LPM_bits;
 }
 
 
@@ -439,131 +443,63 @@ void GPIO_PORT1_registerCallback (uint8_t portPinNum, functionPointer_t fPtr)
 __interrupt void GPIO_Port1_ISR (void)
 {
 	volatile uint8_t interruptSource;
+	volatile uint8_t bitPosition;
 
 	// Only look at enabled interrupt sources
 	interruptSource = (GPIO_PORT1.interrupt_flag & GPIO_PORT1.interrupt_enable);
+	bitPosition = 0;
 
-	switch (interruptSource)
+	while(interruptSource > 0)							// While interrupt sources exist
 	{
-		case 0x01:
-			GPIO_PORT1.interrupt_flag &= ~BIT0;			// Clear interrupt flag
-			GPIO_PORT1_callback[0]();					// Call callback function
-			break;
+		if(interruptSource & 0x01)						// Check for interrupt flag
+		{
+			if(GPIO_PORT1_callback[bitPosition] != 0)	// Check for null pointer
+			{
+				GPIO_PORT1_callback[bitPosition]();		// Call callback function
+			}
 
-		case 0x02:
-			GPIO_PORT1.interrupt_flag &= ~BIT1;			// Clear interrupt flag
-			GPIO_PORT1_callback[1]();					// Call callback function
-			break;
+			GPIO_PORT1.interrupt_flag &= ~(1 << bitPosition);	// Clear interrupt flag
+			__bic_SR_register_on_exit(GPIO_PORT1_LPM_bits[bitPosition]);	// Clear any specified LPM bits
+		}
 
-		case 0x04:
-			GPIO_PORT1.interrupt_flag &= ~BIT2;			// Clear interrupt flag
-			GPIO_PORT1_callback[2]();					// Call callback function
-			break;
-
-		case 0x08:
-			GPIO_PORT1.interrupt_flag &= ~BIT3;			// Clear interrupt flag
-			GPIO_PORT1_callback[3]();					// Call callback function
-			break;
-
-		case 0x10:
-			GPIO_PORT1.interrupt_flag &= ~BIT4;			// Clear interrupt flag
-			GPIO_PORT1_callback[4]();					// Call callback function
-			break;
-
-		case 0x20:
-			GPIO_PORT1.interrupt_flag &= ~BIT5;			// Clear interrupt flag
-			GPIO_PORT1_callback[5]();					// Call callback function
-			break;
-
-		case 0x40:
-			GPIO_PORT1.interrupt_flag &= ~BIT6;			// Clear interrupt flag
-			GPIO_PORT1_callback[6]();					// Call callback function
-			break;
-
-		case 0x80:
-			GPIO_PORT1.interrupt_flag &= ~BIT7;			// Clear interrupt flag
-			GPIO_PORT1_callback[7]();					// Call callback function
-			break;
-
-		default:
-			GPIO_PORT1.interrupt_flag = 0;
-			break;
+		interruptSource = (interruptSource >> 1);		// Shift to check next bit
+		bitPosition++;									// Increment bit position count
 	}
-
-	// TODO: Merge below code into code above
-#if 0
-	//if switch two was pressed, debounce and then clear flag
-	if(SW_PxIFG & SW2)
-	{
-		__delay_cycles(5000);
-		FLAGS |= SW2FLAG;
-		SW_PxIFG &= ~SW2;
-	}
-	else if (GDO0_PxIFG & GDO0_PIN)      //SW2
-	{
-		FLAGS |= GDO0FLAG;
-		GDO0_PxIFG &= ~GDO0_PIN;
-	}
-
-	LPM3_EXIT;
-#endif // 0
 }
 
 
-void GPIO_PORT2_registerCallback (uint8_t portPinNum, functionPointer_t fPtr)
+void GPIO_PORT2_registerCallback (uint8_t portPinNum, functionPointer_t fPtr, uint8_t LPM_bits)
 {
 	GPIO_PORT2_callback[portPinNum] = fPtr;
+	GPIO_PORT2_LPM_bits[portPinNum] = LPM_bits;
 }
 
 
 #pragma vector = PORT2_VECTOR
 __interrupt void GPIO_Port2_ISR (void)
 {
-	switch (GPIO_PORT2.in)
+	volatile uint8_t interruptSource;
+	volatile uint8_t bitPosition;
+
+	// Only look at enabled interrupt sources
+	interruptSource = (GPIO_PORT2.interrupt_flag & GPIO_PORT2.interrupt_enable);
+	bitPosition = 0;
+
+	while(interruptSource > 0)							// While interrupt sources exist
 	{
-		case 0x01:
-			GPIO_PORT2.interrupt_flag &= ~BIT0;			// Clear interrupt flag
-			GPIO_PORT2_callback[0]();					// Call callback function
-			break;
+		if(interruptSource & 0x01)						// Check for interrupt flag
+		{
+			if(GPIO_PORT2_callback[bitPosition] != 0)	// Check for null pointer
+			{
+				GPIO_PORT2_callback[bitPosition]();		// Call callback function
+			}
 
-		case 0x02:
-			GPIO_PORT2.interrupt_flag &= ~BIT1;			// Clear interrupt flag
-			GPIO_PORT2_callback[1]();					// Call callback function
-			break;
+			GPIO_PORT2.interrupt_flag &= ~(1 << bitPosition);	// Clear interrupt flag
+			__bic_SR_register_on_exit(GPIO_PORT2_LPM_bits[bitPosition]);	// Clear any specified LPM bits
+		}
 
-		case 0x04:
-			GPIO_PORT2.interrupt_flag &= ~BIT2;			// Clear interrupt flag
-			GPIO_PORT2_callback[2]();					// Call callback function
-			break;
-
-		case 0x08:
-			GPIO_PORT2.interrupt_flag &= ~BIT3;			// Clear interrupt flag
-			GPIO_PORT2_callback[3]();					// Call callback function
-			break;
-
-		case 0x10:
-			GPIO_PORT2.interrupt_flag &= ~BIT4;			// Clear interrupt flag
-			GPIO_PORT2_callback[4]();					// Call callback function
-			break;
-
-		case 0x20:
-			GPIO_PORT2.interrupt_flag &= ~BIT5;			// Clear interrupt flag
-			GPIO_PORT2_callback[5]();					// Call callback function
-			break;
-
-		case 0x40:
-			GPIO_PORT2.interrupt_flag &= ~BIT6;			// Clear interrupt flag
-			GPIO_PORT2_callback[6]();					// Call callback function
-			break;
-
-		case 0x80:
-			GPIO_PORT2.interrupt_flag &= ~BIT7;			// Clear interrupt flag
-			GPIO_PORT2_callback[7]();					// Call callback function
-			break;
-
-		default:
-			GPIO_PORT2.interrupt_flag = 0;
-			break;
+		interruptSource = (interruptSource >> 1);		// Shift to check next bit
+		bitPosition++;									// Increment bit position count
 	}
 }
 /*****************************************************************************/

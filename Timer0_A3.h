@@ -60,8 +60,8 @@
 //Put public function prototypes here
 void Timer0_init (void);
 void Timer0_armOneShot (uint16_t timerTicks, uint8_t outputVal);
-void Timer0_A1_registerCallback (uint8_t index, functionPointer_t fPtr);
-void Timer0_A0_registerCallback (functionPointer_t fPtr);
+void Timer0_A1_registerCallback (uint8_t index, functionPointer_t fPtr, uint8_t LPM_bits);
+void Timer0_A0_registerCallback (functionPointer_t fPtr, uint8_t LPM_bits);
 /*****************************************************************************/
 //	End Public Function Prototypes
 

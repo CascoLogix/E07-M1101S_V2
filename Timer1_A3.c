@@ -37,7 +37,9 @@
 /*****************************************************************************/
 //Put Variable Declarations here
 functionPointer_t timer1_A1_callback[8];
+uint8_t timer1_A1_LPM_bits[8];
 functionPointer_t timer1_A0_callback;
+uint8_t timer1_A0_LPM_bits;
 /*****************************************************************************/
 //	End Variable Declarations
 
@@ -79,20 +81,22 @@ void Timer1_armOneShot (uint16_t timerTicks, uint8_t outputVal)
 }                                       //   timerA count + number of ticks
 
 
-void Timer1_A1_registerCallback (uint8_t index, functionPointer_t fPtr)
+void Timer1_A1_registerCallback (uint8_t index, functionPointer_t fPtr, uint8_t LPM_bits)
 {
 	if(timer1_A1_callback[index] != 0)
 	{
 		timer1_A1_callback[index] = fPtr;
+		timer1_A1_LPM_bits[index] = LPM_bits;
 	}
 }
 
 
-void Timer1_A0_registerCallback (functionPointer_t fPtr)
+void Timer1_A0_registerCallback (functionPointer_t fPtr, uint8_t LPM_bits)
 {
 	if(timer1_A0_callback != 0)
 	{
 		timer1_A0_callback = fPtr;
+		timer1_A0_LPM_bits = LPM_bits;
 	}
 }
 
@@ -106,6 +110,8 @@ __interrupt void Timer1_A1_ISR (void)
 	{
 		timer1_A1_callback[idx]();	// TA1IV will only ever be even
 	}
+
+	__bic_SR_register_on_exit(timer1_A1_LPM_bits[idx]);
 }
 
 
@@ -116,6 +122,8 @@ __interrupt void Timer1_A0_ISR (void)
 	{
 		timer1_A0_callback();
 	}
+
+	__bic_SR_register_on_exit(timer1_A0_LPM_bits);
 }
 /*****************************************************************************/
 //	End Function Definitions

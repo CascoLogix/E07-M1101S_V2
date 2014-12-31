@@ -200,11 +200,11 @@ extern portJ_t volatile * const p_PORTJ;
 extern void gpio_all_ports_init (void);
 #if defined (__MSP430_HAS_PORT1_R__)
 extern void gpio_port1_init (void);
-void GPIO_PORT1_registerCallback (uint8_t portPinNum, functionPointer_t fPtr);
+void GPIO_PORT1_registerCallback (uint8_t portPinNum, functionPointer_t fPtr, uint8_t LPM_bits);
 #endif
 #if defined (__MSP430_HAS_PORT2_R__)
 extern void gpio_port2_init (void);
-void GPIO_PORT2_registerCallback (uint8_t portPinNum, functionPointer_t fPtr);
+void GPIO_PORT2_registerCallback (uint8_t portPinNum, functionPointer_t fPtr, uint8_t LPM_bits);
 #endif
 #if defined (__MSP430_HAS_PORT3_R__)
 extern void gpio_port3_init (void);

@@ -35,9 +35,16 @@
 /*****************************************************************************/
 // The following mode defines are used by the application to select which mode
 //	to initialize the USCI.
-#define USCI_A0_CLK_SRC_UC0CLK		0
-#define USCI_A0_CLK_SRC_ACLK		1
-#define USCI_A0_CLK_SRC_SMCLK		2
+#define USCI_A0_CLK_SRC_UC0CLK											(0)
+#define USCI_A0_CLK_SRC_ACLK											(1)
+#define USCI_A0_CLK_SRC_SMCLK											(2)
+
+
+#define USCI_RX_IE_BIT													(0x01)
+#define USCI_TX_IE_BIT													(0x02)
+#define USCI_BUSY_FLAG													(0x01)
+#define USCI_RX_INTERRUPT_FLAG											(0x01)
+#define USCI_TX_INTERRUPT_FLAG											(0x02)
 /*****************************************************************************/
 //	End Defines
 
@@ -182,8 +189,6 @@ typedef struct {
 	uint8_t enable_2;
 	uint8_t flag_1;
 	uint8_t flag_2;
-	uint8_t Ax_Bx_interrupt_enable;
-	uint8_t Ax_Bx_interrupt_flag;
 } USCI_interrupt_t;
 #endif
 /*****************************************************************************/
@@ -260,6 +265,18 @@ extern USCI_interrupt_t volatile * const p_USCI_INTERRUPT;
 #define USCI_A0_UART_clear_RX_interrupt_flag() 	(USCI_INTERRUPT.flag_2 &= ~USCI_RX_INTERRUPT_FLAG)
 #define USCI_A0_UART_read_RX_buffer() 			(USCI_A0_UART_CONTROL.receive_buffer)
 #define USCI_A0_UART_read_busy_flag() 			(USCI_A0_UART_CONTROL.status_register & USCI_BUSY_FLAG)
+#define USCI_A0_UART_get_RX_int_en()			(USCI_INTERRUPT.enable_2 & UCA0RXIE)
+#define USCI_A0_UART_set_RX_int_en()			(USCI_INTERRUPT.enable_2 |= UCA0RXIE)
+#define USCI_A0_UART_clr_RX_int_en()			(USCI_INTERRUPT.enable_2 &= ~UCA0RXIE)
+#define USCI_A0_UART_get_TX_int_en()            (USCI_INTERRUPT.enable_2 & UCA0TXIE)
+#define USCI_A0_UART_set_TX_int_en()            (USCI_INTERRUPT.enable_2 |= UCA0TXIE)
+#define USCI_A0_UART_clr_TX_int_en()            (USCI_INTERRUPT.enable_2 &= ~UCA0TXIE)
+#define USCI_A0_UART_get_RX_int_flag()          (USCI_INTERRUPT.flag_2 & UCA0RXIFG)
+#define USCI_A0_UART_set_RX_int_flag()          (USCI_INTERRUPT.flag_2 |= UCA0RXIFG)
+#define USCI_A0_UART_clr_RX_int_flag()          (USCI_INTERRUPT.flag_2 &= ~UCA0RXIFG)
+#define USCI_A0_UART_get_TX_int_flag()          (USCI_INTERRUPT.flag_2 & UCA0TXIFG)
+#define USCI_A0_UART_set_TX_int_flag()          (USCI_INTERRUPT.flag_2 |= UCA0TXIFG)
+#define USCI_A0_UART_clr_TX_int_flag()          (USCI_INTERRUPT.flag_2 &= ~UCA0TXIFG)
 
 // USCI_B0 SPI register manipulation macros
 #define USCI_B0_SPI_phase_change_then_latch() 	(USCI_B0_SPI_CONTROL.control_0 |= UCCKPH)
@@ -283,12 +300,12 @@ extern USCI_interrupt_t volatile * const p_USCI_INTERRUPT;
 #define USCI_B0_SPI_get_TX_int_en()             (USCI_INTERRUPT.Ax_Bx_interrupt_enable & UCB0TXIE)
 #define USCI_B0_SPI_set_TX_int_en()             (USCI_INTERRUPT.Ax_Bx_interrupt_enable |= UCB0TXIE)
 #define USCI_B0_SPI_clr_TX_int_en()             (USCI_INTERRUPT.Ax_Bx_interrupt_enable &= ~UCB0TXIE)
-#define USCI_B0_SPI_get_RX_int_flag()           (USCI_INTERRUPT.Ax_Bx_interrupt_enable & UCB0RXIFG)
-#define USCI_B0_SPI_set_RX_int_flag()           (USCI_INTERRUPT.Ax_Bx_interrupt_enable |= UCB0RXIFG)
-#define USCI_B0_SPI_clr_RX_int_flag()           (USCI_INTERRUPT.Ax_Bx_interrupt_enable &= ~UCB0RXIFG)
-#define USCI_B0_SPI_get_TX_int_flag()           (USCI_INTERRUPT.Ax_Bx_interrupt_enable & UCB0TXIFG)
-#define USCI_B0_SPI_set_TX_int_flag()           (USCI_INTERRUPT.Ax_Bx_interrupt_enable |= UCB0TXIFG)
-#define USCI_B0_SPI_clr_TX_int_flag()           (USCI_INTERRUPT.Ax_Bx_interrupt_enable &= ~UCB0TXIFG)
+#define USCI_B0_SPI_get_RX_int_flag()           (USCI_INTERRUPT.Ax_Bx_interrupt_flag & UCB0RXIFG)
+#define USCI_B0_SPI_set_RX_int_flag()           (USCI_INTERRUPT.Ax_Bx_interrupt_flag |= UCB0RXIFG)
+#define USCI_B0_SPI_clr_RX_int_flag()           (USCI_INTERRUPT.Ax_Bx_interrupt_flag &= ~UCB0RXIFG)
+#define USCI_B0_SPI_get_TX_int_flag()           (USCI_INTERRUPT.Ax_Bx_interrupt_flag & UCB0TXIFG)
+#define USCI_B0_SPI_set_TX_int_flag()           (USCI_INTERRUPT.Ax_Bx_interrupt_flag |= UCB0TXIFG)
+#define USCI_B0_SPI_clr_TX_int_flag()           (USCI_INTERRUPT.Ax_Bx_interrupt_flag &= ~UCB0TXIFG)
 #endif /* defined (__USCI_ENABLE_MACROS__) */
 /*****************************************************************************/
 //	END: Macro Definitions

@@ -44,14 +44,14 @@ void  UARTInit()
 {
   SetClock();
 
-  UARTPSEL  |= BIT1 + BIT2;        // P1.1 = RXD, P1.2=TXD
+  UARTPSEL  |= BIT1 + BIT2;			// P1.1 = RXD, P1.2=TXD
   UARTPSEL2 |= BIT1 + BIT2;
-  UARTCTL1  |= UARTSEL;            // SMCLK
-  UARTBR0    = UARTBRONUM;                  // 9600 Baud
-  UARTBR1    = 0;                    // 9600 Baud
-  UARTMCTL   = UARTUCBRSO;          // Modulation UCBRSx = 1
-  UARTCTL1  &= ~UARTUCSWRST;     // **Initialize USCI state machine**
-  UARTIE2   |= UARTRXIE;            // Enable USCI_A0 RX interrupt
+  UARTCTL1  |= UARTSEL;				// SMCLK
+  UARTBR0    = UARTBRONUM;			// 9600 Baud
+  UARTBR1    = 0;					// 9600 Baud
+  UARTMCTL   = UARTUCBRSO;			// Modulation UCBRSx = 1
+  UARTCTL1  &= ~UARTUCSWRST;		// **Initialize USCI state machine**
+  UARTIE2   |= UARTRXIE;			// Enable USCI_A0 RX interrupt
 }
 
 void Dprintf(const char * message, ...)

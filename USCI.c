@@ -74,12 +74,6 @@
 #define USCI_B0_I2C_SCL_PIN												0x40
 #define USCI_B0_I2C_SDA_PIN												0x80
 
-#define USCI_RX_IE_BIT													0x01
-#define USCI_TX_IE_BIT													0x02
-#define USCI_BUSY_FLAG													0x01
-#define USCI_RX_INTERRUPT_FLAG											0x01
-#define USCI_TX_INTERRUPT_FLAG											0x02
-
 #elif defined (__MSP430F2112)
 #define USCI_INTERRUPT_CONTROL_BASE_ADDRESS								0x01
 #define USCI_A0_PERIPHERAL_CONTROL_BASE_ADDRESS							0x5D
@@ -490,9 +484,9 @@ void USCI_A0_init_UART (uint16_t baud_rate, uint8_t clk_source)
 #else
 	#error "_FCPU not defined"
 #endif
-	USCI_A0_UART_CONTROL.modulation_control = UCBRS2 + UCBRS0;	// Modulation
+	USCI_A0_UART_CONTROL.modulation_control = UCBRS1;	// Modulation
 	USCI_A0_UART_CONTROL.control_1 &= ~UCSWRST;					// Initialize USCI
-	USCI_INTERRUPT.flag_2 &= ~(USCI_TX_IE_BIT | USCI_RX_IE_BIT);
+	//USCI_INTERRUPT.flag_2 &= ~(USCI_TX_IE_BIT | USCI_RX_IE_BIT);
 	USCI_INTERRUPT.enable_2 &= ~(USCI_TX_IE_BIT | USCI_RX_IE_BIT);
 }
 

@@ -1373,7 +1373,7 @@ void SPI_PowerupReset(void)
 void SPI_setup(void)
 {
   CSn_PxOUT |= CSn_PIN;
-  CSn_PxDIR |= CSn_PIN;         // /CS disable
+  CSn_PxDIR |= CSn_PIN;						// /CS disable
 
   UCB0CTL1 |= UCSWRST;                      // **Disable USCI state machine**
   UCB0CTL0 |= UCMST+UCCKPH+UCMSB+UCSYNC;    // 3-pin, 8-bit SPI master
@@ -1397,43 +1397,43 @@ void SPI_setup(void)
 
 void SPI_writeReg(char addr, char value)
 {
-  CSn_PxOUT &= ~CSn_PIN;        // /CS enable
-  while (!(IFG2&UCB0TXIFG));                // Wait for TXBUF ready
-  UCB0TXBUF = addr;                         // Send address
-  while (!(IFG2&UCB0TXIFG));                // Wait for TXBUF ready
-  UCB0TXBUF = value;                        // Send data
-  while (UCB0STAT & UCBUSY);                // Wait for TX to complete
-  CSn_PxOUT |= CSn_PIN;         // /CS disable
+  CSn_PxOUT &= ~CSn_PIN;					// /CS enable
+  while (!(IFG2 & UCB0TXIFG));				// Wait for TXBUF ready
+  UCB0TXBUF = addr;							// Send address
+  while (!(IFG2 & UCB0TXIFG));				// Wait for TXBUF ready
+  UCB0TXBUF = value;						// Send data
+  while (UCB0STAT & UCBUSY);				// Wait for TX to complete
+  CSn_PxOUT |= CSn_PIN;						// /CS disable
 }
 
 void SPI_writeBurstReg(char addr, char *buffer, char count)
 {
   unsigned int i;
 
-  CSn_PxOUT &= ~CSn_PIN;        // /CS enable
-  while (!(IFG2&UCB0TXIFG));                // Wait for TXBUF ready
-  UCB0TXBUF = addr | WRITE_BURST; // Send address
+  CSn_PxOUT &= ~CSn_PIN;					// /CS enable
+  while (!(IFG2&UCB0TXIFG));				// Wait for TXBUF ready
+  UCB0TXBUF = addr | WRITE_BURST;			// Send address
   for (i = 0; i < count; i++)
   {
-    while (!(IFG2&UCB0TXIFG));              // Wait for TXBUF ready
-    UCB0TXBUF = buffer[i];                  // Send data
+    while (!(IFG2&UCB0TXIFG));				// Wait for TXBUF ready
+    UCB0TXBUF = buffer[i];					// Send data
   }
-  while (UCB0STAT & UCBUSY);                // Wait for TX to complete
-  CSn_PxOUT |= CSn_PIN;         // /CS disable
+  while (UCB0STAT & UCBUSY);				// Wait for TX to complete
+  CSn_PxOUT |= CSn_PIN;						// /CS disable
 }
 
 char SPI_readReg(char addr)
 {
   char x;
 
-  CSn_PxOUT &= ~CSn_PIN;        			// /CS enable
-  while (!(IFG2&UCB0TXIFG));                // Wait for TXBUF ready
+  CSn_PxOUT &= ~CSn_PIN;					// /CS enable
+  while (!(IFG2&UCB0TXIFG));				// Wait for TXBUF ready
   UCB0TXBUF = (addr | READ_SINGLE);			// Send address
-  while (!(IFG2&UCB0TXIFG));                // Wait for TXBUF ready
-  UCB0TXBUF = 0;                            // Dummy write so we can read data
-  while (UCB0STAT & UCBUSY);                // Wait for TX to complete
-  x = UCB0RXBUF;                            // Read data
-  CSn_PxOUT |= CSn_PIN;         			// /CS disable
+  while (!(IFG2&UCB0TXIFG));				// Wait for TXBUF ready
+  UCB0TXBUF = 0;							// Dummy write so we can read data
+  while (UCB0STAT & UCBUSY);				// Wait for TX to complete
+  x = UCB0RXBUF;							// Read data
+  CSn_PxOUT |= CSn_PIN;						// /CS disable
 
   return x;
 }
