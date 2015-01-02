@@ -1398,6 +1398,7 @@ void SPI_setup(void)
 void SPI_writeReg(char addr, char value)
 {
   CSn_PxOUT &= ~CSn_PIN;					// /CS enable
+  while (SPI_USCIB0_PxIN & SPI_USCIB0_SOMI);// CAS: Wait for SO to go low (see section 10 on pg 29)
   while (!(IFG2 & UCB0TXIFG));				// Wait for TXBUF ready
   UCB0TXBUF = addr;							// Send address
   while (!(IFG2 & UCB0TXIFG));				// Wait for TXBUF ready
@@ -1411,6 +1412,7 @@ void SPI_writeBurstReg(char addr, char *buffer, char count)
   unsigned int i;
 
   CSn_PxOUT &= ~CSn_PIN;					// /CS enable
+  while (SPI_USCIB0_PxIN & SPI_USCIB0_SOMI);// CAS: Wait for SO to go low (see section 10 on pg 29)
   while (!(IFG2&UCB0TXIFG));				// Wait for TXBUF ready
   UCB0TXBUF = addr | WRITE_BURST;			// Send address
   for (i = 0; i < count; i++)
@@ -1427,6 +1429,7 @@ char SPI_readReg(char addr)
   char x;
 
   CSn_PxOUT &= ~CSn_PIN;					// /CS enable
+  while (SPI_USCIB0_PxIN & SPI_USCIB0_SOMI);// CAS: Wait for SO to go low (see section 10 on pg 29)
   while (!(IFG2&UCB0TXIFG));				// Wait for TXBUF ready
   UCB0TXBUF = (addr | READ_SINGLE);			// Send address
   while (!(IFG2&UCB0TXIFG));				// Wait for TXBUF ready
@@ -1443,6 +1446,7 @@ void SPI_readBurstReg(char addr, char *buffer, char count)
   char i;
 
   CSn_PxOUT &= ~CSn_PIN;        			// /CS enable
+  while (SPI_USCIB0_PxIN & SPI_USCIB0_SOMI);// CAS: Wait for SO to go low (see section 10 on pg 29)
   while (!(IFG2&UCB0TXIFG));                // Wait for TXBUF ready
   UCB0TXBUF = (addr | READ_BURST);			// Send address
   while (UCB0STAT & UCBUSY);                // Wait for TX to complete
@@ -1466,6 +1470,7 @@ char SPI_readStatus(char addr)
   char status;
 
   CSn_PxOUT &= ~CSn_PIN;        			// /CS enable
+  while (SPI_USCIB0_PxIN & SPI_USCIB0_SOMI);// CAS: Wait for SO to go low (see section 10 on pg 29)
   while (!(IFG2&UCB0TXIFG));                // Wait for TXBUF ready
   UCB0TXBUF = (addr | READ_BURST);			// Send address
   while (!(IFG2&UCB0TXIFG));                // Wait for TXBUF ready
@@ -1480,6 +1485,7 @@ char SPI_readStatus(char addr)
 void SPI_strobe(char strobe)
 {
   CSn_PxOUT &= ~CSn_PIN;        			// /CS enable
+  while (SPI_USCIB0_PxIN & SPI_USCIB0_SOMI);// CAS: Wait for SO to go low (see section 10 on pg 29)
   while (!(IFG2&UCB0TXIFG));                // Wait for TXBUF ready
   UCB0TXBUF = strobe;                       // Send strobe
   // Strobe addr is now being TX'ed

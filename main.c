@@ -80,11 +80,13 @@ void main(void)
 	//Timer0_A1_registerCallback (1, &TA0CCR1_ISR_Handler);
 
 	//UARTInit();					// For debug purposes
-    APP_POST();					// Last step before setting CC1101 to eceive data
+    APP_POST();					// Last step before setting CC1101 to receive data
     CC1101_init();				// Initialize CC1101
     CC1101_setReceive();		// Set CC1101 to receive data
 
 	uint8_t volatile STATE = STATE_IDLE;	// Default state is STATE_IDLE
+
+	GDO0_PxIFG &= ~GDO0_PIN;
 
 	while(1)
 	{
@@ -93,6 +95,8 @@ void main(void)
 			case STATE_IDLE:				// this is the idle state
 			{
 				__bis_SR_register(LPM3_bits + GIE);
+
+				_NOP();
 
 				if(FLAGS & SW2FLAG)
 				{
@@ -117,11 +121,9 @@ void main(void)
 				GDO0_PxIE &= ~GDO0_PIN;
 
 				char size = 3;				// this is the size of the entire packet being sent, including the size byte
-				//char size = 2;				// this is the size of the entire packet being sent, including the size byte
-				txBuffer[0] = 1;			// this is the size byte (it lets the receiver know how many bytes are following)
+				txBuffer[0] = 2;			// this is the size byte (it lets the receiver know how many bytes are following)
 				txBuffer[1] = 0x01;			// first byte
 				txBuffer[2] = 0xAA;			// second byte
-				//txBuffer[1] = 0xCC;			// first byte
 				CC1101_sendPacket(txBuffer, size);
 				STATE = STATE_IDLE;			// return to IDLE state
 				GDO0_PxIFG &= ~GDO0_PIN;	// Clear flag
@@ -148,6 +150,7 @@ void main(void)
 				else
 				{
 					//CRC did not check out or buffer was too small to hold received packet
+					_NOP();		// For setting breakpoint
 				}
 
 				STATE = STATE_IDLE;				// return to idle state
