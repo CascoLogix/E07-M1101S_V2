@@ -56,7 +56,7 @@ uint8_t timer1_A0_LPM_bits;
 //	Function Definitions
 /*****************************************************************************/
 //Put function definitions here
-void Timer1_init (void)
+void Timer1_A3_init (void)
 {
 	TA1CTL = TASSEL_2;			// Clk = SMCLK; Clear timer
 	TA1CTL |= MC_1;				// Start timer in "UP" mode

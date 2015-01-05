@@ -76,10 +76,6 @@
 /*	USCI Struct Type Defines for Struct Overlays							 */
 /*                                                                           */
 /*****************************************************************************/
-typedef struct {
-
-} USCI_Ax_UART_config_t;
-
 #if defined (__MSP430_HAS_USCI_A0__) || \
 	defined (__MSP430_HAS_USCI_A1__) || \
 	defined (__MSP430_HAS_USCI_A2__) || \
@@ -161,7 +157,18 @@ typedef struct {
 // TODO:
 // - Need to add another struct, as USCI_B module does not have the first three
 //    registers as shown above.
-#endif
+#endif /* defined (__MSP430_HAS_USCI_A0__) || \
+	defined (__MSP430_HAS_USCI_A1__) || \
+	defined (__MSP430_HAS_USCI_A2__) || \
+	defined (__MSP430_HAS_USCI_A3__) || \
+	defined (__MSP430_HAS_USCI_B0__) || \
+	defined (__MSP430_HAS_USCI_B1__) || \
+	defined (__MSP430_HAS_USCI_B2__) || \
+	defined (__MSP430_HAS_USCI_B3__) || \
+	defined (__MSP430_HAS_USCI_AB0__) || \
+	defined (__MSP430_HAS_USCI_AB1__) || \
+	defined (__MSP430_HAS_USCI_AB2__) || \
+	defined (__MSP430_HAS_USCI_AB3__) */
 
 
 #if defined (__MSP430_HAS_USCI_AB0__) || \
@@ -190,7 +197,18 @@ typedef struct {
 	uint8_t flag_1;
 	uint8_t flag_2;
 } USCI_interrupt_t;
-#endif
+#endif /* defined (__MSP430_HAS_USCI_AB0__) || \
+		defined (__MSP430_HAS_USCI_AB1__) || \
+		defined (__MSP430_HAS_USCI_AB2__) || \
+		defined (__MSP430_HAS_USCI_AB3__) || \
+		defined (__MSP430_HAS_USCI_A0__) || \
+		defined (__MSP430_HAS_USCI_A1__) || \
+		defined (__MSP430_HAS_USCI_A2__) || \
+		defined (__MSP430_HAS_USCI_A3__) || \
+		defined (__MSP430_HAS_USCI_B0__) || \
+		defined (__MSP430_HAS_USCI_B1__) || \
+		defined (__MSP430_HAS_USCI_B2__) || \
+		defined (__MSP430_HAS_USCI_B3__) */
 /*****************************************************************************/
 /*                                                                           */
 /*	END: USCI Struct Type Defines for Struct Overlays						 */

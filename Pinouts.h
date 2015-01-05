@@ -81,8 +81,8 @@
 #define LED2_PxSEL2			(GPIO_PORT1.select_2)
 #define LED2_PxOUT			(GPIO_PORT1.out)
 #define LED2_PxDIR			(GPIO_PORT1.direction)
-#define LED2_PIN			(BIT6)
-#define LED2_PIN_NUM		(6)
+#define LED2_PIN			(BIT4)
+#define LED2_PIN_NUM		(4)
 
 
 // Switch 1 port definitions
