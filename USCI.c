@@ -41,6 +41,11 @@
 #define __USING_USCI_B0_I2C_MODE__
 */
 
+#ifndef _FCPU	// For defining the CPU frequency
+#error "_FCPU not defined. Place in predefined symbols in compiler setup as \
+	_FCPU=1234567, or in a global header file (i.e. main.h)."
+#endif // _FCPU
+
 /*****************************************************************************/
 /*                                                                           */
 /*	Base address and bit definitions needed by USCI peripherals				 */

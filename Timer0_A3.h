@@ -115,9 +115,8 @@ extern Timer0_A3_t volatile * const p_TIMER0_A3;
 #define TIMER0_A3_ClearClockSourceSelect 		(TIMER0_A3.control &= ~(TASSEL1 | TASSEL0))
 #define TIMER0_A3_ClockSourceSelect(a) 			(TIMER0_A3_ClearClockSourceSelect; \
 												 TIMER0_A3.control |= (a & (TASSEL1 | TASSEL0)))
-#define TIMER0_A3_SetCountMode(a) 				(TIMER0_A3_Stop; \
-												 TIMER0_A3.control |= (a & (MC1 | MC0)))
 #define TIMER0_A3_Stop				 			(TIMER0_A3.control &= ~(MC1 | MC0))
+#define TIMER0_A3_SetCountMode(a) 				(TIMER0_A3.control |= (a & (MC1 | MC0)))
 #define TIMER0_A3_SetDivider(a) 				(TIMER0_A3_ClearDivider; \
 												 TIMER0_A3.control |= (a & (ID1 | ID0)))
 #define TIMER0_A3_ClearDivider				 	(TIMER0_A3.control &= ~(ID1 | ID0))

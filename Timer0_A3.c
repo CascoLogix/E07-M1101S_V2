@@ -125,7 +125,6 @@ void Timer0_A3_init (void)
 	TA0CTL = TASSEL_1;			// Clk = ACLK/1
 	TA0CCR0 = 32767;			// Initialize compare register
 	TA0CCTL0 |= CCIE;			// Enable compare interrupt
-	TA0CTL |= MC_1;				// Start timer in "Up" mode
 }
 
 
