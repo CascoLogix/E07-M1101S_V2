@@ -47,7 +47,6 @@ void CC1101_sendPacket(char *txBuffer, char size)
 											// Wait GDO0 to clear -> end of pkt
 	GDO0_PxIFG &= ~GDO0_PIN;      			// After pkt TX, this flag is set.
 											// Has to be cleared before existing
-	//SPI_strobe(SIDLE);
 	SPI_strobe(SRX);
 }
 

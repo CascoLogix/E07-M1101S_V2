@@ -26,6 +26,8 @@
 //	Code Compilation Control Defines
 /*****************************************************************************/
 //Put code compilation defines here
+#define RX_QUEUE_SIZE		64
+#define TX_QUEUE_SIZE		64
 /*****************************************************************************/
 //	End Code Compilation Control Defines
 
