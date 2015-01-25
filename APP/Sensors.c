@@ -114,6 +114,7 @@ void updatePump2Temp (void)
 #define ADC10_RESOLUTION				(1023)
 #define ADC10_TEMP_TO_DEG_C(a)			(a = (a - 0.986) / 0.00355)
 #define DEG_C_TO_DEG_F(a)				(a = (a * 1.8) + 32)
+#define CAL_ADC_25T3C					(0x7C)
 
 void updateAmbientAirTemp (void)
 {
@@ -123,7 +124,7 @@ void updateAmbientAirTemp (void)
 	while(ADC10_IsBusy);
 	//while(!ADC10_GetInterruptFlag);
 	//ADC10_ClearInterruptFlag;
-	sensorReadings.ambAirTemp = ADC10_GetConversionResults;
+	sensorReadings.ambAirTemp = ADC10_GetConversionResults + CAL_ADC_25T3C;
 	ADC10_DisableConversion;
 	//ADC10_ClearRef;
 
