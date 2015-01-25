@@ -166,7 +166,7 @@ void main(void)
 					}
 
 					ltoa(s, strRSSI);				// Convert integer to ASCII
-					writeLine(", RSSI ");			// Tag the data
+					writeLine(",");					// Comma-delimit the data
 					writeLine(strRSSI);				// Print the RSSI value
 					writeLine("\r\n");				// Terminate the line
 				}
