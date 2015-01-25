@@ -133,12 +133,10 @@ void main(void)
 				//temporarily disable GDO0 interrupt
 				GDO0_PxIE &= ~GDO0_PIN;
 
-				char size = 5;				// this is the size of the entire packet being sent, including the size byte
-				txBuffer[0] = 4;			// this is the size byte (it lets the receiver know how many bytes are following)
-				txBuffer[1] = ((getAmbientAirTemp() & 0xFF000000) >> 24);			// first byte
-				txBuffer[2] = ((getAmbientAirTemp() & 0x00FF0000) >> 16);			// second byte
-				txBuffer[3] = ((getAmbientAirTemp() & 0x0000FF00) >> 8);			// third byte
-				txBuffer[4] =   getAmbientAirTemp() & 0x000000FF;					// fourth byte
+				char size = 3;				// this is the size of the entire packet being sent, including the size byte
+				txBuffer[0] = 2;			// this is the size byte (it lets the receiver know how many bytes are following)
+				txBuffer[1] = ((getAmbientAirTemp() & 0xFF00) >> 8);			// first byte
+				txBuffer[2] =   getAmbientAirTemp() & 0x00FF;					// second byte
 				CC1101_sendPacket(txBuffer, size);
 				STATE = STATE_IDLE;			// return to IDLE state
 				GDO0_PxIFG &= ~GDO0_PIN;	// Clear flag
@@ -355,7 +353,7 @@ void APP_POST (void)
     volatile uint16_t toggleCount;
     char * pString;
 
-    //TA1CCR0 = 121;								// Set compare 0 register to start tone
+    TA1CCR0 = 121;								// Set compare 0 register to start tone
     pString = (char*) string;
     writeLine(pString);
     LED1_PxOUT &= ~LED1_PIN; 					// Set LED1 off

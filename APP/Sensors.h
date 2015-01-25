@@ -64,12 +64,12 @@ void updatePump2Temp (void);
 void updateAmbientAirTemp (void);
 void updateTankWaterTemp (void);
 void updateTankWaterLevel (void);
-uint32_t getBattVoltage (void);
-uint32_t getPump1Temp (void);
-uint32_t getPump2Temp (void);
-uint32_t getAmbientAirTemp (void);
-uint32_t getTankWaterTemp (void);
-uint32_t getTankWaterLevel (void);
+uint16_t getBattVoltage (void);
+int16_t getPump1Temp (void);
+int16_t getPump2Temp (void);
+int16_t getAmbientAirTemp (void);
+int16_t getTankWaterTemp (void);
+uint16_t getTankWaterLevel (void);
 /******************************************************************************/
 //	End Public Function Prototypes
 

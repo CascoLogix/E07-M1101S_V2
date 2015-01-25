@@ -38,12 +38,12 @@
 //Put Variable Declarations here
 struct {
 	const uint8_t dataPayload;
-	uint32_t battVoltage;
-	uint32_t pump1Temp;
-	uint32_t pump2Temp;
-	uint32_t ambAirTemp;
-	uint32_t tankWaterTemp;
-	uint32_t tankWaterLevel;
+	uint16_t battVoltage;
+	int16_t pump1Temp;
+	int16_t pump2Temp;
+	int16_t ambAirTemp;
+	int16_t tankWaterTemp;
+	uint16_t tankWaterLevel;
 } sensorReadings = {
 	(sizeof(sensorReadings) - sizeof(sensorReadings.dataPayload)), // dataPayload
 	0,														// battVoltage
@@ -148,37 +148,37 @@ void updateTankWaterLevel (void)
 }
 
 
-uint32_t getBattVoltage (void)
+uint16_t getBattVoltage (void)
 {
 	return sensorReadings.battVoltage;
 }
 
 
-uint32_t getPump1Temp (void)
+int16_t getPump1Temp (void)
 {
 	return sensorReadings.pump1Temp;
 }
 
 
-uint32_t getPump2Temp (void)
+int16_t getPump2Temp (void)
 {
 	return sensorReadings.pump2Temp;
 }
 
 
-uint32_t getAmbientAirTemp (void)
+int16_t getAmbientAirTemp (void)
 {
 	return sensorReadings.ambAirTemp;
 }
 
 
-uint32_t getTankWaterTemp (void)
+int16_t getTankWaterTemp (void)
 {
 	return sensorReadings.tankWaterTemp;
 }
 
 
-uint32_t getTankWaterLevel (void)
+uint16_t getTankWaterLevel (void)
 {
 	return sensorReadings.tankWaterLevel;
 }
