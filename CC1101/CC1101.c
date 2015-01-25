@@ -133,32 +133,57 @@ short CC1101_getRSSI(void)
 }
 
 
+uint8_t CC1101_getPartNo(void)
+{
+	uint8_t retVal;
+
+	retVal = SPI_readStatus(PARTNUM);
+	return retVal;
+}
+
+
+uint8_t CC1101_getVersion(void)
+{
+	uint8_t retVal;
+
+	retVal = SPI_readStatus(VERSION);
+	return retVal;
+}
+
+
+void CC1101_getChipID(uint8_t chipID[])
+{
+	chipID[0] = SPI_readStatus(PARTNUM);
+	chipID[1] = SPI_readStatus(VERSION);
+}
+
+
 void CC1101_writeSettings(void)
 {
-	// Data rate = 1.19948
-	// RX filter BW = 58.035714
-	// Device address = 0
-	// TX power = 0
-	// Sync word qualifier mode = 30/32 sync word bits detected
-	// CRC autoflush = false
-	// Preamble count = 4
+	// Channel number = 0
+	// Manchester enable = false
+	// Address config = No address check
+	// PA ramping = false
+	// Base frequency = 433.999969
 	// Deviation = 5.157471
 	// Modulated = true
-	// CRC enable = true
-	// Channel spacing = 199.951172
-	// Data format = Normal mode
-	// Channel number = 0
-	// Packet length mode = Variable packet length mode. Packet length configured by the first byte after sync word
-	// Manchester enable = false
-	// Modulation format = GFSK
-	// Address config = No address check
 	// Packet length = 255
-	// Base frequency = 432.999817
-	// Carrier frequency = 432.999817
-	// PA ramping = false
+	// Modulation format = GFSK
+	// Device address = 0
+	// Channel spacing = 199.951172
+	// Sync word qualifier mode = 30/32 sync word bits detected
+	// Data format = Normal mode
+	// CRC enable = true
+	// CRC autoflush = false
+	// RX filter BW = 58.035714
+	// Carrier frequency = 433.999969
+	// Preamble count = 4
+	// TX power = 10
+	// Packet length mode = Variable packet length mode. Packet length configured by the first byte after sync word
 	// Whitening = true
+	// Data rate = 1.19948
 	// PA table
-	//#define PA_TABLE {0x60,0x00,0x00,0x00,0x00,0x00,0x00,0x00,}
+	//#define PA_TABLE {0xc0,0x00,0x00,0x00,0x00,0x00,0x00,0x00,}
 	//
 	// Rf settings for CC1101
 	//
@@ -166,8 +191,8 @@ void CC1101_writeSettings(void)
 	SPI_writeReg(FIFOTHR,0x47);//RX FIFO and TX FIFO Thresholds
 	SPI_writeReg(FSCTRL1,0x06);//Frequency Synthesizer Control
 	SPI_writeReg(FREQ2,0x10);  //Frequency Control Word, High Byte
-	SPI_writeReg(FREQ1,0xA7);  //Frequency Control Word, Middle Byte
-	SPI_writeReg(FREQ0,0x62);  //Frequency Control Word, Low Byte
+	SPI_writeReg(FREQ1,0xB1);  //Frequency Control Word, Middle Byte
+	SPI_writeReg(FREQ0,0x3B);  //Frequency Control Word, Low Byte
 	SPI_writeReg(MDMCFG4,0xF5);//Modem Configuration
 	SPI_writeReg(MDMCFG3,0x83);//Modem Configuration
 	SPI_writeReg(MDMCFG2,0x13);//Modem Configuration
@@ -183,7 +208,7 @@ void CC1101_writeSettings(void)
 	SPI_writeReg(TEST1,0x35);  //Various Test Settings
 	SPI_writeReg(TEST0,0x09);  //Various Test Settings
 
-	char PA[] =  {0x60,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
+	char PA[] =  {0xC0,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
 	const unsigned char PA_LEN = 8;
 	SPI_writeBurstReg(PATABLE, PA, PA_LEN);
 }

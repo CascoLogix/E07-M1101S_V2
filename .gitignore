@@ -22,3 +22,6 @@ Debug/subdir_vars.mk
 lnk_msp430g2553.cmd
 targetConfigs/MSP430G2553.ccxml
 targetConfigs/readme.txt
+/Testing
+/targetConfigs
+/SmartRF Studio Configurations

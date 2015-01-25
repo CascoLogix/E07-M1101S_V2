@@ -13,6 +13,8 @@
 #ifndef CC1101_h_
 #define CC1101_h_
 
+#include <stdint.h>
+
 
 void CC1101_init(void);
 void CC1101_sendPacket(char *txBuffer, char size);
@@ -22,6 +24,9 @@ void CC1101_setReceive(void);
 void CC1101_setIdle(void);
 void CC1101_setSleep(void);
 short CC1101_getRSSI(void);
+uint8_t CC1101_getPartNo(void);
+uint8_t CC1101_getVersion(void);
+void CC1101_getChipID(uint8_t chipID[]);
 void CC1101_powerupReset(void);
 
 

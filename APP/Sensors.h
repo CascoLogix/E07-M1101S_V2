@@ -1,22 +1,21 @@
 /******************************************************************************/
-//	Terminal.h
+//	Sensors.h
 //  
-//	 Created on: Jan 11, 2015
+//	 Created on: Jan 22, 2015
 //	     Author: Clint Stevenson
 //
 /******************************************************************************/
 
 
-#ifndef TERMINAL_H_
-#define TERMINAL_H_
+#ifndef SENSORS_H_
+#define SENSORS_H_
 
 
 /******************************************************************************/
 //	Includes
 /******************************************************************************/
 //Put conditional includes here
-#include <string.h>
-#include <stdlib.h>
+#include <stdint.h>
 /******************************************************************************/
 //	End Includes
 
@@ -57,9 +56,22 @@
 //	Public Function Prototypes (extern)
 /******************************************************************************/
 //Put public function prototypes here
-void writeLine (char * pString);
+void initSensors (void);
+void updateSensors (void);
+void updateBattVoltage (void);
+void updatePump1Temp (void);
+void updatePump2Temp (void);
+void updateAmbientAirTemp (void);
+void updateTankWaterTemp (void);
+void updateTankWaterLevel (void);
+uint32_t getBattVoltage (void);
+uint32_t getPump1Temp (void);
+uint32_t getPump2Temp (void);
+uint32_t getAmbientAirTemp (void);
+uint32_t getTankWaterTemp (void);
+uint32_t getTankWaterLevel (void);
 /******************************************************************************/
 //	End Public Function Prototypes
 
 
-#endif /* TERMINAL_H_ */
+#endif /* SENSORS_H_ */

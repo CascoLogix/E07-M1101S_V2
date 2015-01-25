@@ -152,6 +152,43 @@ void writeLine (char * pString)
 
 
 
+void writeLineHex (uint8_t * pData, uint8_t numBytes)
+{
+	char hexChar;
+	uint8_t idx;
+
+	for(idx = 0; idx < numBytes; idx++)
+	{
+		hexChar = pData[idx] & 0x0F;
+		if(hexChar < 10)
+		{
+			hexChar += '0';
+		}
+
+		else
+		{
+			hexChar += 'A';
+		}
+
+		putChar(hexChar);
+
+		hexChar = pData[idx] >> 4;
+		if(hexChar < 10)
+		{
+			hexChar += '0';
+		}
+
+		else
+		{
+			hexChar += 'A';
+		}
+
+		putChar(hexChar);
+	}
+}
+
+
+
 void getLine (char * pString)
 {
 	while (*pString != '\r' || *pString != '\n')	// Check for line terminator
